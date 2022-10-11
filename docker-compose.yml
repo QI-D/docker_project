@@ -2,6 +2,11 @@ version: '3.7'
 
 services:
 
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+
   mysqldb:
     image: mysql
     restart: always
@@ -28,6 +33,13 @@ services:
     image: qidang/project1:frontend
     ports:
       - "8091:8091"
+
+  analysis:
+    depends_on:
+      - mongodb
+    image: qidang/project1:analysis
+    ports:
+      - "8100:8100"
 
 networks:
   default:
