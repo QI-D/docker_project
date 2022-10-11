@@ -2,6 +2,6 @@ version: 1
 datastore:
   user: mysql_user
   password: SecuRe_pwd1
-  hostname: localhost
+  hostname: mysqldb
   port: 3306
   db: orders

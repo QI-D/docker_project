@@ -1,14 +1,9 @@
-FROM qidang/project1:storage
-
-RUN apt install python3-pip -y
+FROM python:3
 
 COPY requirements.txt /storage/requirements.txt
-
 WORKDIR /storage
-RUN pip3 install -r requirements.txt
-RUN service mysql start
+
+RUN pip install -r requirements.txt
 
 COPY . /storage
-
-EXPOSE 8090
-CMD ["python3", "./app.py"]
+CMD [ "python", "./app.py" ]

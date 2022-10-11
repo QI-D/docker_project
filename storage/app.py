@@ -1,7 +1,6 @@
 import connexion
 import datetime
 import json
-import swagger_ui_bundle
 import yaml
 import logging
 import logging.config
@@ -12,8 +11,12 @@ from expense import Expense
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
+with open('app_config.yml', 'r') as f:
+    app_config = yaml.safe_load(f.read())
 
-DB_ENGINE = create_engine('mysql+pymysql://mysql_user:SecuRe_pwd1@localhost:3306/orders')
+database=app_config['datastore']
+
+DB_ENGINE= create_engine('mysql+pymysql://{}:{}@{}:{}/{}'.format(database['user'],database['password'],database['hostname'],database['port'],database['db']))
 Base.metadata.bind = DB_ENGINE
 DB_SESSION = sessionmaker(bind=DB_ENGINE)
 
@@ -59,9 +62,6 @@ def getExpense(timestamp):
 
 app = connexion.FlaskApp(__name__, specification_dir='')
 app.add_api("openapi.yml", strict_validation=True, validate_responses=True)
-
-with open('app_config.yml', 'r') as f:
-    app_config = yaml.safe_load(f.read())
 
 with open('log_config.yml', 'r') as f:
     log_config = yaml.safe_load(f.read())
