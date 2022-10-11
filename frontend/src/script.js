@@ -3,8 +3,8 @@ let signupBtn = document.getElementById("sign-up");
 let loginBtn = document.getElementById("login");
 
 makeExpenseBtn.addEventListener('click', makeExpense);
-signupBtn.addEventListener('click', signup);
-loginBtn.addEventListener('click', login);
+// signupBtn.addEventListener('click', signup);
+// loginBtn.addEventListener('click', login);
 
 var xhr = null;
 
@@ -72,10 +72,10 @@ function makeExpense(event) {
     document.getElementsByClassName('price')[0].value = "";
 }
 
-function signup(){
-    location.href = "signup.html"
-}
+// function signup(){
+//     location.href = "signup.html"
+// }
 
-function login(){
-    location.href = "login.html"
-}
+// function login(){
+//     location.href = "login.html"
+// }
