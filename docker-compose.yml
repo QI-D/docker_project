@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+
+  mysqldb:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - "./database.sql:/docker-entrypoint-initdb.d/database.sql"
+    ports:
+      - "3306:3306"
+
+  storage:
+    depends_on:
+      - mysqldb
+    image: qidang/project1:storage
+    ports:
+      - "8090:8090"
+
+  backend:
+    image: qidang/project1:backend
+    ports:
+      - "8080:8080"
+
+  frontend:
+    image: qidang/project1:frontend
+    ports:
+      - "8091:8091"
+
+networks:
+  default:
+    name: project1
