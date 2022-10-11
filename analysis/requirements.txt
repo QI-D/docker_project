@@ -1,0 +1,5 @@
+requests
+connexion
+apscheduler
+pymongo
+swagger-ui-bundle
