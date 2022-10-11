@@ -1,3 +1,3 @@
 version: 1
 expenseEvent:
-  url: http://localhost:8090/expense
+  url: http://storage:8090/expense
