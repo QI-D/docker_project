@@ -31,6 +31,57 @@ paths:
               $ref: "#/components/schemas/expenseEvent"
         description: Order to be placed
 
+  /writeUser:
+    post:
+      tags:
+        - createuser
+      summary: createuser
+      description: createuser
+      operationId: app.write_user
+      requestBody:
+        description: createuser
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/user"
+      responses:
+        "200":
+          description: user create
+        "400":
+          description: invalid input, object invalid
+
+  /getUser:
+    get:
+      tags:
+        - getuser
+      summary: get username and password
+      description: get username and password
+      operationId: app.get_user
+      parameters:
+        - name: username
+          in: query
+          description: Limits user
+          schema:
+            type: string
+      responses:
+        "200":
+          description: get user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/user"
+        "400":
+          description: invalid input, object invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
   /getExpense:
     get:
       tags:
@@ -67,6 +118,17 @@ paths:
 
 components:
   schemas:
+    user:
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      description: user credentials
     expenseEvent:
       type: object
       required:

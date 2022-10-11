@@ -8,6 +8,7 @@ import logging.config
 from connexion import NoContent
 from base import Base
 from expense import Expense
+from user import User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
@@ -58,6 +59,32 @@ def getExpense(timestamp):
     logger.info("Query for get expenses after %s returns %d results" % (timestamp, len(results_list)))
 
     return results_list, 200
+
+def get_user(username):
+    session = DB_SESSION()
+    readings = session.query(User).filter(User.username == username)
+    result=[]
+    for i in readings:
+        result.append(i.to_dict())
+    session.close()
+
+    return result, 200
+
+def write_user(body):
+
+    session = DB_SESSION()
+    print(body)
+    user = User(  
+            body['username'],
+            body['password'],
+            )
+
+    session.add(user)
+
+    session.commit()
+    session.close()
+
+    return NoContent, 201
 
 
 app = connexion.FlaskApp(__name__, specification_dir='')

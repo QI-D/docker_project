@@ -5,6 +5,12 @@ USE orders;
 CREATE USER 'mysql_user'@'%' IDENTIFIED BY 'SecuRe_pwd1';
 GRANT ALL PRIVILEGES ON orders.* TO 'mysql_user'@'%';
 
+CREATE TABLE IF NOT EXISTS user
+          (id INT NOT NULL AUTO_INCREMENT, 
+          username VARCHAR(250) NOT NULL,
+          password VARCHAR(250) NOT NULL,
+          PRIMARY KEY (id));
+
 CREATE TABLE IF NOT EXISTS expense
           (id INT NOT NULL AUTO_INCREMENT,
            order_id VARCHAR(36) NOT NULL,
