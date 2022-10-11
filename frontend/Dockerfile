@@ -8,5 +8,4 @@ RUN npm install http-server -g
 
 COPY . /frontend
 
-EXPOSE 8091
 CMD ["http-server", "-p", "8091"]
