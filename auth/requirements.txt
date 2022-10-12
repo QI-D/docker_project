@@ -2,3 +2,4 @@ connexion
 flask
 flask_cors
 requests
+swagger-ui-bundle
