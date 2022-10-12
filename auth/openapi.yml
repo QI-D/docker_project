@@ -1,0 +1,44 @@
+---
+openapi: 3.0.0
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: "http://localhost:8200"
+info:
+  description: API for an inventory management system
+  version: "1.0.0"
+  title: Inventory Management System API
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+paths:
+  /auth:
+    post:
+      tags:
+        - auth
+      summary: get user credenteial
+      description: get user credenteial
+      operationId: app.user
+      requestBody:
+        description: username password sent
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/user"
+      responses:
+        "200":
+          description: found user credentials
+        "400":
+          description: invalid input, object invalid
+components:
+  schemas:
+    user:
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      description: user credentials

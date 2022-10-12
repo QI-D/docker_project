@@ -1,0 +1,3 @@
+version: 1
+user:
+  url: http://storage:8090/getUser

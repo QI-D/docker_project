@@ -1,0 +1,4 @@
+connexion
+flask
+flask_cors
+requests
