@@ -64,10 +64,13 @@ def calculate_data(data):
 
     total_price=0
     total_quantity=0
+    unit_price = 0
     for i in data:
         print(f"i in data {i}")
-        total_price += float(i['price'])
         total_quantity += int(i["quantity"])
+        unit_price = float(i['price'])
+
+    total_price = total_price + unit_price* total_quantity
 
     stats['total_price'] = total_price
     stats['total_quantity'] = total_quantity
