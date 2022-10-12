@@ -4,19 +4,19 @@
 </header>
 
 <body>
-    <div><span>Last update: </span><span id="time-container"></span></div>
+    <div><span>Stats: </span><span id="result-container"></span></div>
     <button onclick="httpGet()">Show Result</button>
-    <div id="result-container"></div>
 </body>
 <!-- <script src="../src/status.js"> </script> -->
 <script>
-function httpGet()
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", "http://localhost:8100/stats", false ); // false for synchronous request
-    xmlHttp.send( null );
-    return xmlHttp.responseText;
-}
+    function httpGet()
+    {
+        xhr = getXmlHttpRequestObject();
+        xhr.onreadystatechange = dataCallback;
+        xhr.open( "GET", "http://localhost:8100/stats", false ); // false for synchronous request
+        xhr.send( null );
+        return xhr.responseText;
+    }
 
     var xhr = null;
 
@@ -32,21 +32,11 @@ function httpGet()
         // Check response is ready or not
         if (xhr.readyState == 4 && xhr.status == 200) {
             console.log("User data received!");
-            getDate();
             dataDiv = document.getElementById('result-container');
             // Set current data text
             dataDiv.innerHTML = xhr.responseText;
         }
     }
-    function getDate() {
-        date = new Date().toString();
-
-        document.getElementById('time-container').textContent
-            = date;
-    }
-    (function () {
-        getDate();
-    })();
 </script>
 
 </html>
