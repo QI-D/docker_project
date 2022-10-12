@@ -3,3 +3,5 @@ connexion
 apscheduler
 pymongo
 swagger-ui-bundle
+flask
+Flask-Cors

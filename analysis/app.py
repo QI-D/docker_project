@@ -6,6 +6,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from pymongo import MongoClient
 import pymongo
 import yaml
+from flask_cors import CORS
 
 
 def init_scheduler():
@@ -89,6 +90,7 @@ def populate_stats():
 
 
 app = connexion.FlaskApp(__name__, specification_dir='')
+CORS(app.app, resources={r"*": {"origins": "*", "headers": "*"}})
 app.add_api("openapi.yml", validate_responses=True)
 
 with open('app_config.yml', 'r') as f:
