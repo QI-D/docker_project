@@ -45,6 +45,7 @@
         // Check response is ready or not
         if (xhr.readyState == 4 && xhr.status == 201) {
             console.log("Data creation response received!");
+            console.log(xhr.status)
             dataDiv = document.getElementsByClassName('sent-data-container');
             // Set current data text
             dataDiv.innerHTML = xhr.responseText;
@@ -68,10 +69,16 @@
         xhr = getXmlHttpRequestObject();
         xhr.onreadystatechange = sendDataCallback;
         // asynchronous requests
-        xhr.open("POST", "http://localhost:8110/login", true);
+        xhr.open("POST", "http://localhost:8200/auth", true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         // Send the request over the network
         xhr.send(login_str);
+
+        if (xhr.status == 201 || xhr.status == 200) {
+            console.log("login succeed, redirecting to ordering page");
+
+            location.href = "order.html"
+        }
     }
 
 </script>
