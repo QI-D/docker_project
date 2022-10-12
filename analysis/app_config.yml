@@ -1,8 +1,10 @@
 version: 1
 datastore:
   connectionstring: mongodb://mongodb:27017
+  # connectionstring: mongodb://localhost:27017
   db: orders
 mysql:
   url: http://storage:8090/getExpense
+  # url: http://localhost:8090/getExpense
 scheduler:
-  period_sec: 5
+  period_sec: 10

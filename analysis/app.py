@@ -5,10 +5,7 @@ from connexion import NoContent
 from apscheduler.schedulers.background import BackgroundScheduler
 from pymongo import MongoClient
 import pymongo
-import datetime
 import yaml
-
-LAST_UPDATE_DEFAULT="2022-10-07T19:21:58Z"
 
 
 def init_scheduler():
@@ -22,21 +19,30 @@ def get_database():
 
    return client['orders']
 
-def read_data():
+def get_stats():
+    curr_time = datetime.now()
+    print(f"curr_time : {curr_time}")
+    curr_time_str = curr_time.strftime("%Y-%m-%dT%H:%M:%SZ")
+
     dbname = get_database()
     collection_name = dbname[app_config['datastore']['db']]
     result = list(collection_name.find().sort('last_updated',pymongo.DESCENDING))
     if len(result) == 0:
-        return LAST_UPDATE_DEFAULT
-    return result[0]['last_updated']
+        return curr_time_str
+    result_dict = {
+        "total_price": result[0]["total_price"],
+        "total_quantity": result[0]["total_quantity"],
+        "last_updated": result[0]["last_updated"]
+    }
+    return result_dict
 
 def write_data(data):
     dbname = get_database()
     collection_name = dbname[app_config['datastore']['db']]
     stats={
-        "total_price":data['total_price'],
-        "total_quantity":data['total_quantity'],
-        "last_updated":data['last_updated']
+        "total_price": data['total_price'],
+        "total_quantity": data['total_quantity'],
+        "last_updated": data['last_updated']
     }
     collection_name.insert_one(stats)
     return 
@@ -52,6 +58,7 @@ def calculate_data(data):
     total_price=0
     total_quantity=0
     for i in data:
+        print(f"i in data {i}")
         total_price += float(i['price'])
         total_quantity += int(i["quantity"])
 
@@ -62,27 +69,22 @@ def calculate_data(data):
 def populate_stats():
     """ Periodically update stats """
 
-    last_update=read_data()
+    last_update=get_stats()["last_updated"]
 
     raw_data = requests.get(app_config['mysql']['url']+f"?timestamp={last_update}")
     processed_data = calculate_data(raw_data.json())
 
     mongo_data ={
-        "total_price":processed_data['total_price'],
-        "total_quantity":processed_data['total_quantity'],
-        "last_updated":datetime.datetime.now()
+        "total_price": processed_data['total_price'],
+        "total_quantity": processed_data['total_quantity'],
+        "last_updated": datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
     }
     write_data(mongo_data)
     print(f"data insert{mongo_data}")
 
-def get_stats():
-    stats = get_database()
-
-    return stats, 200
-
 
 app = connexion.FlaskApp(__name__, specification_dir='')
-app.add_api("openapi.yml", strict_validation=True, validate_responses=True)
+app.add_api("openapi.yml", validate_responses=True)
 
 with open('app_config.yml', 'r') as f:
     app_config = yaml.safe_load(f.read())

@@ -38,11 +38,8 @@ components:
   schemas:
     stats:
       type: object
-      required:
-        - total_expense
-        - total_item
       properties:
-        total_expense:
+        total_price:
           type: number
-        total_item:
+        total_quantity:
           type: integer
