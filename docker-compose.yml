@@ -41,6 +41,13 @@ services:
     ports:
       - "8100:8100"
 
+  auth:
+    depends_on:
+      - storage
+    image: qidang/project1:auth
+    ports:
+      - "8200:8200"
+
 networks:
   default:
     name: project1
