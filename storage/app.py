@@ -11,6 +11,7 @@ from expense import Expense
 from user import User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from flask_cors import CORS
 
 with open('app_config.yml', 'r') as f:
     app_config = yaml.safe_load(f.read())
@@ -67,8 +68,11 @@ def get_user(username):
     for i in readings:
         result.append(i.to_dict())
     session.close()
-
-    return result, 200
+    
+    if len(result) == 0:
+        return "user doesn't exist"
+    else:
+        return result, 200
 
 def write_user(body):
 
@@ -88,6 +92,7 @@ def write_user(body):
 
 
 app = connexion.FlaskApp(__name__, specification_dir='')
+CORS(app.app, resources={r"*": {"origins": "*", "headers": "*"}})
 app.add_api("openapi.yml", strict_validation=True, validate_responses=True)
 
 with open('log_config.yml', 'r') as f:
