@@ -48,6 +48,13 @@ services:
     ports:
       - "8200:8200"
 
+  results:
+    depends_on:
+      - analysis
+    image: status
+    ports: 
+      - "5000:5000"
+
 networks:
   default:
     name: project1

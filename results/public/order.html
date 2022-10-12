@@ -1,0 +1,42 @@
+<html>
+<header>
+    <title>Database Statistics</title>
+</header>
+
+<body>
+    <div><span>Stats: </span><span id="result-container"></span></div>
+    <button onclick="httpGet()">Show Result</button>
+</body>
+<!-- <script src="../src/status.js"> </script> -->
+<script>
+    function httpGet()
+    {
+        xhr = getXmlHttpRequestObject();
+        xhr.onreadystatechange = dataCallback;
+        xhr.open( "GET", "http://localhost:8100/stats", false ); // false for synchronous request
+        xhr.send( null );
+        return xhr.responseText;
+    }
+
+    var xhr = null;
+
+    getXmlHttpRequestObject = function () {
+        if (!xhr) {
+            // Create a new XMLHttpRequest object 
+            xhr = new XMLHttpRequest();
+        }
+        return xhr;
+    };
+
+    function dataCallback() {
+        // Check response is ready or not
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log("User data received!");
+            dataDiv = document.getElementById('result-container');
+            // Set current data text
+            dataDiv.innerHTML = xhr.responseText;
+        }
+    }
+</script>
+
+</html>
