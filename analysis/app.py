@@ -21,14 +21,20 @@ def get_database():
 
 def get_stats():
     curr_time = datetime.now()
-    print(f"curr_time : {curr_time}")
     curr_time_str = curr_time.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    init_dict = {
+        "total_price": 0,
+        "total_quantity": 0,
+        "last_updated": curr_time_str
+    }
 
     dbname = get_database()
     collection_name = dbname[app_config['datastore']['db']]
     result = list(collection_name.find().sort('last_updated',pymongo.DESCENDING))
     if len(result) == 0:
-        return curr_time_str
+        return init_dict
+
     result_dict = {
         "total_price": result[0]["total_price"],
         "total_quantity": result[0]["total_quantity"],
@@ -68,7 +74,6 @@ def calculate_data(data):
 
 def populate_stats():
     """ Periodically update stats """
-
     last_update=get_stats()["last_updated"]
 
     raw_data = requests.get(app_config['mysql']['url']+f"?timestamp={last_update}")
